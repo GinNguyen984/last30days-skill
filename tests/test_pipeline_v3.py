@@ -52,6 +52,32 @@ class PipelineV3Tests(unittest.TestCase):
         # At least one per-subquery line.
         self.assertIn("[Planner]   sq1 label=", output)
 
+    def test_parallel_web_backend_enables_grounding_source(self):
+        plan = {
+            "intent": "news",
+            "freshness_mode": "balanced_recent",
+            "cluster_mode": "timeline",
+            "subqueries": [
+                {
+                    "label": "primary",
+                    "search_query": "test topic",
+                    "ranking_query": "What happened with test topic?",
+                    "sources": ["grounding"],
+                }
+            ],
+            "source_weights": {"grounding": 1.0},
+        }
+        report = pipeline.run(
+            topic="test topic",
+            config={"LAST30DAYS_REASONING_PROVIDER": "auto"},
+            depth="quick",
+            requested_sources=["grounding"],
+            web_backend="parallel",
+            external_plan=plan,
+        )
+        self.assertIn("grounding", report.errors_by_source)
+        self.assertIn("PARALLEL_API_KEY", report.errors_by_source["grounding"])
+
 
 class TestSourceFetchCap(unittest.TestCase):
     """X source fetch count must be capped by MAX_SOURCE_FETCHES."""
