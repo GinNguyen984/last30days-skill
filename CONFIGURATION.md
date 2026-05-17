@@ -21,8 +21,8 @@ This is a focused **configuration reference** maintained alongside the engine. T
 
 | Platform | Default path | Override |
 |---|---|---|
-| Linux / macOS | `~/Documents/Last30Days/` | `LAST30DAYS_MEMORY_DIR=/path` |
-| Windows | `C:\Users\<you>\Documents\Last30Days\` | `LAST30DAYS_MEMORY_DIR=C:\path` |
+| Linux / macOS | `LAST30DAYS_MEMORY_DIR` defaults to `~/Documents/Last30Days/` | set `LAST30DAYS_MEMORY_DIR=/path` |
+| Windows | `LAST30DAYS_MEMORY_DIR` defaults to `C:\Users\<you>\Documents\Last30Days\` | set `LAST30DAYS_MEMORY_DIR=C:\path` |
 
 Each run produces one file per topic, slug-named:
 `<slug>-raw[-suffix].md`. Same topic + same suffix on the same day overwrites; same topic + same suffix on different days appends a date stamp.
@@ -31,7 +31,7 @@ Each run produces one file per topic, slug-named:
 - `--save-dir <path>` - one-off output location.
 - `--save-suffix <name>` - distinguish runs of the same topic (e.g. per client: `--save-suffix=acme`).
 
-The footer line `📎 Raw results saved to ~/Documents/Last30Days/<slug>-raw.md` is the canonical pointer; if it shows backslashes on Windows update past v3.1.1.
+The footer line `📎 Raw results saved to ${LAST30DAYS_MEMORY_DIR:-$HOME/Documents/Last30Days}/<slug>-raw.md` is the canonical pointer; if it shows backslashes on Windows update past v3.1.1.
 
 ---
 
