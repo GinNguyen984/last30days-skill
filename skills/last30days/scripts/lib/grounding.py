@@ -162,7 +162,7 @@ def parallel_search(
             "title": r.get("title", ""),
             "url": url,
             "source_domain": _domain(url),
-            "snippet": (r.get("excerpts") or [""])[0],
+            "snippet": ((r.get("excerpts") or [""])[0] or "")[:500],
             "date": pub_date,
             "relevance": 0.8,
             "why_relevant": "Parallel AI web search",
